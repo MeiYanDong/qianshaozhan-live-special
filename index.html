@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>前哨站直播专题｜一次带案例的 AI 心法分享</title>
+    <meta
+      name="description"
+      content="前哨站直播专题：一次带案例的 AI 心法分享，上下两期回放链接、阅读稿与可阅读逐字稿。"
+    />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">前哨站直播专题</p>
+          <h1>一次带案例的 AI 心法分享</h1>
+          <p class="dek">
+            两场直播放在同一个阅读界面里：保留回放入口、阅读整理版和可阅读逐字稿，方便顺着“上、下”两期把方法论读完。
+          </p>
+        </div>
+        <figure class="cover">
+          <img src="./assets/qianshaozhan-cover.svg" alt="前哨站直播专题封面" />
+        </figure>
+      </header>
+
+      <main class="workspace">
+        <aside class="episode-panel" aria-label="直播期数">
+          <div class="panel-heading">
+            <span>已处理直播</span>
+            <strong>2 期</strong>
+          </div>
+          <div id="episodeList" class="episode-list"></div>
+        </aside>
+
+        <section class="reader" aria-live="polite">
+          <div class="reader-toolbar">
+            <div>
+              <p id="episodeKicker" class="reader-kicker"></p>
+              <h2 id="episodeTitle"></h2>
+              <p id="episodeMeta"></p>
+            </div>
+            <div class="toolbar-actions">
+              <a id="replayLink" class="text-button" href="#" target="_blank" rel="noreferrer">打开回放</a>
+              <a id="sourceLink" class="text-button secondary" href="#" target="_blank" rel="noreferrer">Markdown</a>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="阅读模式">
+            <button id="notesTab" class="tab is-active" type="button" data-mode="notes" role="tab">阅读稿</button>
+            <button id="transcriptTab" class="tab" type="button" data-mode="transcript" role="tab">可阅读逐字稿</button>
+          </div>
+
+          <article id="content" class="article-body">
+            <p class="loading">正在载入内容...</p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

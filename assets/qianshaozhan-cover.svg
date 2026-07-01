@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 620" role="img" aria-labelledby="title desc">
+  <title id="title">前哨站直播专题封面</title>
+  <desc id="desc">米色纸张背景上的黑红蓝色广播档案封面。</desc>
+  <rect width="840" height="620" fill="#fffaf1"/>
+  <path d="M36 36h768v548H36z" fill="#f4efe5" stroke="#171614" stroke-width="6"/>
+  <path d="M88 112h664M88 508h664" stroke="#171614" stroke-width="4"/>
+  <path d="M142 172h184v184H142z" fill="#171614"/>
+  <path d="M514 172h184v184H514z" fill="#a9352a"/>
+  <circle cx="420" cy="264" r="112" fill="none" stroke="#244e64" stroke-width="14"/>
+  <path d="M348 264h144M420 192v144" stroke="#244e64" stroke-width="12"/>
+  <path d="M142 406h556" stroke="#171614" stroke-width="8"/>
+  <path d="M142 440h420" stroke="#171614" stroke-width="8"/>
+  <path d="M142 474h496" stroke="#171614" stroke-width="8"/>
+  <text x="88" y="94" fill="#a9352a" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="30" font-weight="700">LIVE ARCHIVE</text>
+  <text x="88" y="552" fill="#171614" font-family="Songti SC, STSong, serif" font-size="48" font-weight="900">前哨站 · AI 心法</text>
+</svg>
