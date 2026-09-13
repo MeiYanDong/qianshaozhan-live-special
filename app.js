@@ -50,12 +50,39 @@ function renderResults() {
   icons();
 }
 
+function renderHome() {
+  document.title = "强生社区 · 强力生活";
+  const recommended = episodes.find(e => e.rating === 5);
+  main.innerHTML = `
+    <section class="community-home">
+      <div class="community-intro"><h1>强力生活</h1><p>想到。做到。得到。</p><a href="#/philosophy">我们的理念 ${icon("arrow-up-right")}</a></div>
+      <div class="community-grid">
+        <section class="recent-content" aria-labelledby="recent-title">
+          <div class="section-heading"><h2 id="recent-title">最近收录</h2><span>前哨站 / 每周分享</span></div>
+          ${episodes.slice(0, 5).map(e => `<article class="update-row">
+            <div class="update-meta"><time datetime="${e.date}">${date(e.date)}</time><a href="#/qianshaozhan">前哨站</a>${stars(e)}</div>
+            <h3><a href="${url(e)}">${escape(e.title)}</a></h3>
+            <p>${escape(e.summary)}</p>
+            <div class="update-links">${e.highlights.map(h => '<a href="' + url(e,h.id) + '">' + icon("bookmark") + escape(h.title) + '</a>').join("")}<a href="${url(e)}">阅读全文 ${icon("arrow-up-right")}</a></div>
+          </article>`).join("")}
+          <a class="all-episodes" href="#/qianshaozhan">前哨站全部 ${episodes.length} 期 ${icon("arrow-right")}</a>
+        </section>
+        <aside class="community-aside">
+          <section class="community-section"><p class="eyebrow">认知的前哨</p><h2><a href="#/qianshaozhan">前哨站 ${icon("arrow-up-right")}</a></h2><p>每周一次认知同步。从 AI、职业化到强力生活，在具体问题里更新判断。</p><a class="subtle-link" href="#/qianshaozhan">阅读每周分享 ${icon("arrow-right")}</a></section>
+          <section class="community-section"><p class="eyebrow">共同的主张</p><h2><a href="#/philosophy">强生理念 ${icon("arrow-up-right")}</a></h2><p>想到、做到、得到。强力生活的九项具体指标，以及它们的原始出处。</p><a class="subtle-link" href="#/philosophy">阅读完整理念 ${icon("arrow-right")}</a></section>
+          ${recommended ? '<section class="community-section recommendation"><p class="eyebrow">推荐阅读</p>' + stars(recommended) + '<h3><a href="' + url(recommended) + '">' + escape(recommended.title) + '</a></h3></section>' : ""}
+        </aside>
+      </div>
+    </section>`;
+  icons();
+}
+
 function renderArchive() {
-  document.title = "前哨站 · 每周直播档案";
+  document.title = "前哨站 · 强生社区";
   const topics = [...new Set(episodes.flatMap(e => e.topics))];
   main.innerHTML = `
     <section class="archive">
-      <div class="archive-heading"><div><p class="eyebrow">持续更新的分享</p><h1>直播档案<span id="result-count" aria-live="polite"></span></h1></div>
+      <div class="archive-heading"><div><p class="eyebrow">认知的前哨 / 每周分享</p><h1>前哨站<span id="result-count" aria-live="polite"></span></h1></div>
         <label class="search">${icon("search")}<input id="search" type="search" placeholder="搜索标题、主题" aria-label="搜索标题、主题" value="${escape(archive.query)}"></label>
       </div>
       <nav class="filters" aria-label="主题筛选">${["", ...topics].map(t => '<button type="button" data-topic="' + escape(t) + '" aria-pressed="' + (archive.topic === t) + '">' + escape(t || "全部主题") + '</button>').join("")}</nav>
@@ -74,19 +101,19 @@ function metadataLine(line) {
   return /^(?:[-*]\s*)?(?:\*\*)?(?:来源|原始回放|回放链接|原始链接|直播链接|推荐指数|回放时长|时长|源视频|视频时长)\s*[：:]/.test(line.trim());
 }
 
-async function renderReader(e, modeId, chapter, token) {
+async function renderReader(e, modeId, chapter, token, community = false) {
   const mode = modes(e).find(m => m.id === modeId);
   if (!mode) { renderMissing(); return; }
-  document.title = e.title + " · " + mode.title + " · 前哨站";
+  document.title = (community ? "强生理念" : e.title + " · " + mode.title) + " · 强生社区";
   const series = e.series ? episodes.filter(item => item.series?.id === e.series.id).sort((a,b) => a.series.part - b.series.part) : [];
   main.innerHTML = `
     <section class="reading">
-      <a class="back-link" href="#/">${icon("arrow-left")}返回目录</a>
+      <a class="back-link" href="${community ? '#/' : '#/qianshaozhan'}">${icon("arrow-left")}${community ? '返回社区' : '返回前哨站'}</a>
       <header class="reading-header">
         <div class="reading-meta"><time datetime="${e.date}">${date(e.date)}</time><span>${e.duration}</span>${e.topics.map(t => '<span>' + escape(t) + '</span>').join("")}${stars(e)}</div>
-        <h1>${escape(e.title)}</h1>
+        <h1>${community ? '强生理念：强力生活' : escape(e.title)}</h1>
         <div class="reading-actions">
-          <nav class="modes" aria-label="稿件类型">${modes(e).map(m => '<a href="' + url(e,m.id) + '"' + (m.id === mode.id ? ' aria-current="page"' : '') + '>' + escape(m.title) + '</a>').join("")}</nav>
+          <nav class="modes" aria-label="稿件类型">${community ? '<a href="' + url(e) + '">来源：前哨站 · 2026.09.12</a>' : modes(e).map(m => '<a href="' + url(e,m.id) + '"' + (m.id === mode.id ? ' aria-current="page"' : '') + '>' + escape(m.title) + '</a>').join("")}</nav>
           <div class="document-actions"><a href="${escape(e.replayUrl)}" target="_blank" rel="noreferrer">${icon("play")}回放</a><a href="${mode.path}" download title="下载 Markdown" aria-label="下载 Markdown">${icon("download")}</a></div>
         </div>
       </header>
@@ -120,7 +147,7 @@ async function renderReader(e, modeId, chapter, token) {
     article.querySelectorAll("a").forEach(a => { if (/^https?:/.test(a.href)) { a.target = "_blank"; a.rel = "noreferrer"; } });
     const headings = [...article.querySelectorAll("h2, h3")];
     headings.forEach((h, i) => { h.id = "chapter-" + (i + 1); h.tabIndex = -1; });
-    document.querySelector("#toc").innerHTML = headings.map(h => '<a class="' + (h.tagName === "H3" ? "subchapter" : "") + '" href="' + url(e,mode.id) + "/" + h.id + '">' + escape(h.textContent) + '</a>').join("") || '<span>本篇暂无章节</span>';
+    document.querySelector("#toc").innerHTML = headings.map(h => '<a class="' + (h.tagName === "H3" ? "subchapter" : "") + '" href="' + (community ? "#/philosophy" : url(e,mode.id)) + "/" + h.id + '">' + escape(h.textContent) + '</a>').join("") || '<span>本篇暂无章节</span>';
     observer = new IntersectionObserver(entries => {
       const visible = entries.find(entry => entry.isIntersecting);
       if (visible) document.querySelectorAll("#toc a").forEach(a => a.classList.toggle("active", a.hash.endsWith("/" + visible.target.id)));
@@ -139,8 +166,8 @@ function scrollChapter(id) {
   if (target) { target.scrollIntoView(); target.focus({ preventScroll: true }); }
 }
 function renderMissing() {
-  document.title = "未找到内容 · 前哨站";
-  main.innerHTML = '<section class="empty-state"><h1>未找到这篇内容</h1><a class="back-link" href="#/">返回全部期目</a></section>';
+  document.title = "未找到内容 · 强生社区";
+  main.innerHTML = '<section class="empty-state"><h1>未找到这篇内容</h1><a class="back-link" href="#/">返回社区首页</a></section>';
 }
 let previousPath = "";
 function route() {
@@ -151,7 +178,19 @@ function route() {
   const token = ++revision;
   observer?.disconnect();
   window.scrollTo(0,0);
-  if (!parts.length) { renderArchive(); return; }
+  const section = !parts.length ? "home" : parts[0] === "philosophy" ? "philosophy" : ["qianshaozhan", "episode"].includes(parts[0]) ? "archive" : "";
+  document.querySelectorAll("[data-section]").forEach(a => {
+    if (a.dataset.section === section) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+  if (!parts.length) { renderHome(); return; }
+  if (parts[0] === "qianshaozhan" && parts.length === 1) { renderArchive(); return; }
+  if (parts[0] === "philosophy") {
+    const source = episodes.find(e => e.highlights.some(h => h.id === "qiangsheng"));
+    if (source) renderReader(source, "qiangsheng", parts[1], token, true);
+    else renderMissing();
+    return;
+  }
   const episode = parts[0] === "episode" ? episodes.find(e => e.id === parts[1]) : null;
   if (!episode) { renderMissing(); return; }
   renderReader(episode, parts[2] || "notes", parts[3], token);
