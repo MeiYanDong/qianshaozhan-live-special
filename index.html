@@ -1,67 +1,24 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>前哨站直播专题｜一次带案例的 AI 心法分享</title>
-    <meta
-      name="description"
-      content="前哨站直播专题：已处理直播回放链接、阅读稿、可阅读逐字稿与重点理念摘编。"
-    />
-    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div class="site-shell">
-      <header class="masthead">
-        <div>
-          <p class="eyebrow">前哨站直播专题</p>
-          <h1>一次带案例的 AI 心法分享</h1>
-          <p class="dek">
-            已处理直播放在同一个阅读界面里：保留回放入口、阅读整理版、可阅读逐字稿和重点理念摘编，方便顺着前哨站的连续脉络读完。
-          </p>
-        </div>
-        <figure class="cover">
-          <img src="./assets/qianshaozhan-cover.svg" alt="前哨站直播专题封面" />
-        </figure>
-      </header>
-
-      <main class="workspace">
-        <aside class="episode-panel" aria-label="直播期数">
-          <div class="panel-heading">
-            <span>已处理直播</span>
-            <strong id="episodeCount">3 期</strong>
-          </div>
-          <div id="episodeList" class="episode-list"></div>
-        </aside>
-
-        <section class="reader" aria-live="polite">
-          <div class="reader-toolbar">
-            <div>
-              <p id="episodeKicker" class="reader-kicker"></p>
-              <h2 id="episodeTitle"></h2>
-              <p id="episodeRating" class="rating-line" hidden></p>
-              <p id="episodeMeta"></p>
-            </div>
-            <div class="toolbar-actions">
-              <a id="replayLink" class="text-button" href="#" target="_blank" rel="noreferrer">打开回放</a>
-              <a id="sourceLink" class="text-button secondary" href="#" target="_blank" rel="noreferrer">Markdown</a>
-            </div>
-          </div>
-
-          <div class="tabs" role="tablist" aria-label="阅读模式">
-            <button id="notesTab" class="tab is-active" type="button" data-mode="notes" role="tab">阅读稿</button>
-            <button id="transcriptTab" class="tab" type="button" data-mode="transcript" role="tab">可阅读逐字稿</button>
-            <button id="highlightTab" class="tab" type="button" data-mode="highlight" role="tab">强生理念</button>
-          </div>
-
-          <article id="content" class="article-body">
-            <p class="loading">正在载入内容...</p>
-          </article>
-        </section>
-      </main>
-    </div>
-
-    <script src="./app.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>前哨站 · 每周直播档案</title>
+  <meta name="description" content="前哨站每周直播档案。按日期和主题阅读分享、逐字稿与重点摘编。">
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到内容</a>
+  <header class="site-header">
+    <a class="brand" href="#/"><img src="./assets/favicon.svg" alt="" width="28" height="28"><span>前哨站</span><small>每周直播档案</small></a>
+    <a class="archive-link" href="#/"><i data-lucide="library"></i>全部期目</a>
+  </header>
+  <main id="main" tabindex="-1"></main>
+  <footer class="site-footer"><span>前哨站 / 直播与文字</span><span id="footer-count"></span></footer>
+  <script src="./assets/vendor/marked.umd.js"></script>
+  <script src="./assets/vendor/purify.min.js"></script>
+  <script src="./assets/vendor/lucide.min.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
 </html>
