@@ -1,5 +1,19 @@
 const episodes = [
   {
+    id: "professionalism-qiangsheng-20260912",
+    label: "强生",
+    date: "2026.9.12",
+    title: "关于今年看过的最重要的视频",
+    duration: "01:28:00",
+    rating: "★★★★★",
+    replayUrl:
+      "https://appm1dwjnky5483.h5.xet.pomoho.com/v4/course/alive/l_6aa4e979e4b0694c5c0959cb?app_id=appm1dwjnky5483&alive_mode=&pro_id=course_32Ha3c1VN3OQBVC1xxVoPdJKjJU&type=2&conduit_type=live_group&conduit_id=course_32Ha3c1VN3OQBVC1xxVoPdJKjJU&product_id=course_32Ha3c1VN3OQBVC1xxVoPdJKjJU",
+    notesPath: "./content/2026-09-12-notes.md",
+    transcriptPath: "./content/2026-09-12-transcript.md",
+    highlightPath: "./content/2026-09-12-qiangsheng.md",
+    summary: "从德州扑克职业训练量讲到专业化、半职业原则，并提出“强生”的强力生活理念。",
+  },
+  {
     id: "ai-xinfa-20260621",
     label: "上",
     date: "2026.6.21",
@@ -32,12 +46,15 @@ const state = {
 
 const els = {
   episodeList: document.querySelector("#episodeList"),
+  episodeCount: document.querySelector("#episodeCount"),
   episodeKicker: document.querySelector("#episodeKicker"),
   episodeTitle: document.querySelector("#episodeTitle"),
+  episodeRating: document.querySelector("#episodeRating"),
   episodeMeta: document.querySelector("#episodeMeta"),
   replayLink: document.querySelector("#replayLink"),
   sourceLink: document.querySelector("#sourceLink"),
   content: document.querySelector("#content"),
+  tabsWrap: document.querySelector(".tabs"),
   tabs: document.querySelectorAll(".tab"),
 };
 
@@ -124,7 +141,15 @@ function currentEpisode() {
   return episodes.find((episode) => episode.id === state.episodeId) || episodes[0];
 }
 
+function modePath(episode, mode) {
+  if (mode === "notes") return episode.notesPath;
+  if (mode === "transcript") return episode.transcriptPath;
+  if (mode === "highlight") return episode.highlightPath;
+  return episode.notesPath;
+}
+
 function renderEpisodeList() {
+  els.episodeCount.textContent = `${episodes.length} 期`;
   els.episodeList.innerHTML = episodes
     .map(
       (episode) => `
@@ -132,6 +157,11 @@ function renderEpisodeList() {
           <span class="label"><span>${episode.date}</span><span>${episode.label}</span></span>
           <h3>${episode.title}</h3>
           <p>${episode.summary}</p>
+          ${
+            episode.rating
+              ? `<p class="card-rating"><span>推荐指数</span><strong aria-label="推荐指数 ${episode.rating.length} 星">${episode.rating}</strong></p>`
+              : ""
+          }
           <p>时长 ${episode.duration}</p>
         </button>
       `,
@@ -141,7 +171,7 @@ function renderEpisodeList() {
 
 async function loadContent() {
   const episode = currentEpisode();
-  const path = state.mode === "notes" ? episode.notesPath : episode.transcriptPath;
+  const path = modePath(episode, state.mode);
   els.content.innerHTML = '<p class="loading">正在载入内容...</p>';
   try {
     const response = await fetch(path);
@@ -155,27 +185,41 @@ async function loadContent() {
 
 function renderHeader() {
   const episode = currentEpisode();
-  const sourcePath = state.mode === "notes" ? episode.notesPath : episode.transcriptPath;
+  const sourcePath = modePath(episode, state.mode);
   els.episodeKicker.textContent = `${episode.date} / 第 ${episode.label} 期`;
   els.episodeTitle.textContent = episode.title;
+  els.episodeRating.hidden = !episode.rating;
+  els.episodeRating.textContent = episode.rating ? `推荐指数 ${episode.rating}` : "";
   els.episodeMeta.textContent = `${episode.summary}  回放时长 ${episode.duration}`;
   els.replayLink.href = episode.replayUrl;
   els.sourceLink.href = sourcePath;
 }
 
 function renderTabs() {
+  const episode = currentEpisode();
+  let visibleCount = 0;
   els.tabs.forEach((tab) => {
-    tab.classList.toggle("is-active", tab.dataset.mode === state.mode);
-    tab.setAttribute("aria-selected", tab.dataset.mode === state.mode ? "true" : "false");
+    const available = Boolean(modePath(episode, tab.dataset.mode));
+    tab.hidden = !available;
+    tab.disabled = !available;
+    if (available) visibleCount += 1;
+    const active = available && tab.dataset.mode === state.mode;
+    tab.classList.toggle("is-active", active);
+    tab.setAttribute("aria-selected", active ? "true" : "false");
   });
+  els.tabsWrap.style.setProperty("--tab-count", visibleCount);
 }
 
 function setEpisode(episodeId) {
   state.episodeId = episodeId;
+  if (!modePath(currentEpisode(), state.mode)) {
+    state.mode = "notes";
+  }
   render();
 }
 
 function setMode(mode) {
+  if (!modePath(currentEpisode(), mode)) return;
   state.mode = mode;
   render();
 }

@@ -6,7 +6,7 @@
     <title>前哨站直播专题｜一次带案例的 AI 心法分享</title>
     <meta
       name="description"
-      content="前哨站直播专题：一次带案例的 AI 心法分享，上下两期回放链接、阅读稿与可阅读逐字稿。"
+      content="前哨站直播专题：已处理直播回放链接、阅读稿、可阅读逐字稿与重点理念摘编。"
     />
     <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
@@ -18,7 +18,7 @@
           <p class="eyebrow">前哨站直播专题</p>
           <h1>一次带案例的 AI 心法分享</h1>
           <p class="dek">
-            两场直播放在同一个阅读界面里：保留回放入口、阅读整理版和可阅读逐字稿，方便顺着“上、下”两期把方法论读完。
+            已处理直播放在同一个阅读界面里：保留回放入口、阅读整理版、可阅读逐字稿和重点理念摘编，方便顺着前哨站的连续脉络读完。
           </p>
         </div>
         <figure class="cover">
@@ -30,7 +30,7 @@
         <aside class="episode-panel" aria-label="直播期数">
           <div class="panel-heading">
             <span>已处理直播</span>
-            <strong>2 期</strong>
+            <strong id="episodeCount">3 期</strong>
           </div>
           <div id="episodeList" class="episode-list"></div>
         </aside>
@@ -40,6 +40,7 @@
             <div>
               <p id="episodeKicker" class="reader-kicker"></p>
               <h2 id="episodeTitle"></h2>
+              <p id="episodeRating" class="rating-line" hidden></p>
               <p id="episodeMeta"></p>
             </div>
             <div class="toolbar-actions">
@@ -51,6 +52,7 @@
           <div class="tabs" role="tablist" aria-label="阅读模式">
             <button id="notesTab" class="tab is-active" type="button" data-mode="notes" role="tab">阅读稿</button>
             <button id="transcriptTab" class="tab" type="button" data-mode="transcript" role="tab">可阅读逐字稿</button>
+            <button id="highlightTab" class="tab" type="button" data-mode="highlight" role="tab">强生理念</button>
           </div>
 
           <article id="content" class="article-body">
